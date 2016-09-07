@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MyZhiHuRB</string>
+    <string name="where_image_save">图片保存在</string>
+    <string name="Image_save_error">保存失败，请检查内存卡状态</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
