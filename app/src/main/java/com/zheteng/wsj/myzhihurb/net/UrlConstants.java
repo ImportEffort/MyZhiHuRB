@@ -5,5 +5,7 @@ package com.zheteng.wsj.myzhihurb.net;
  */
 public interface UrlConstants {
 
-    String SplashUrl = "http://news-at.zhihu.com/api/4/start-image/1080*1776";
+    String BaseUrl = "http://news-at.zhihu.com";
+    String SplashUrl = BaseUrl + "/api/4/start-image/1080*1776";
+    String ThemeUrl = BaseUrl + "/api/4/themes";//侧边栏数据
 }
