@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.zheteng.wsj.myzhihurb.R;
+import com.zheteng.wsj.myzhihurb.fragment.HomeFragment;
 import com.zheteng.wsj.myzhihurb.fragment.NavFragment;
 
 import butterknife.ButterKnife;
@@ -19,6 +20,7 @@ import butterknife.InjectView;
 public class MainActivity extends AppCompatActivity {
 
     private static final String NAV_FRAGMENT = "nav_fragment";
+    private static final String HOME_FRGMENT = "home_frgment";//ctrl shif U
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
     @InjectView(R.id.fl_content)
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         NavFragment fragment = new NavFragment();
         fragmentTransaction.replace(R.id.navigation_fragment, fragment, NAV_FRAGMENT);
+        fragmentTransaction.replace(R.id.fl_content,new HomeFragment(),HOME_FRGMENT);
         fragmentTransaction.commit();
     }
 

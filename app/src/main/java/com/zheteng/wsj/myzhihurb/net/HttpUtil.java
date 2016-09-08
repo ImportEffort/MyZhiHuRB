@@ -19,7 +19,7 @@ public class HttpUtil {
     private static HttpUtil instance = new HttpUtil();
     private OkHttpClient mOkHttpClient;
     private Handler mHanlder;
-
+    private Call mCall;
     private HttpUtil() {
         mOkHttpClient = new OkHttpClient();
         mHanlder = new Handler(Looper.getMainLooper());//获取主线程的Hander
@@ -37,9 +37,9 @@ public class HttpUtil {
      */
     public void getJsonString(String url, final OkHttpCallBackForString callInterface) {
         Request request = new Request.Builder().url(url).build();
-        Call call = mOkHttpClient.newCall(request);
+        mCall = mOkHttpClient.newCall(request);
 
-        call.enqueue(new Callback() {
+        mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 callInterface.onFailure(call, e);
@@ -68,9 +68,9 @@ public class HttpUtil {
     public void getResponseBytes(String url, final OkHttpCallBackForBytes callInterface) {
 
         Request request = new Request.Builder().url(url).build();
-        Call call = mOkHttpClient.newCall(request);
+        mCall = mOkHttpClient.newCall(request);
 
-        call.enqueue(new Callback() {
+        mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 callInterface.onFailure(call, e);
@@ -88,5 +88,13 @@ public class HttpUtil {
 
     }
 
+    /**
+     * 取消正在进行的网络请求
+     */
+    public void cancelAll(){
+
+        if (mOkHttpClient!= null && instance != null && mCall != null && !mCall.isCanceled())
+            instance.mCall.cancel();
+    }
 
 }

@@ -2,10 +2,11 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/holo_blue_dark</item>
+        <item name="colorPrimaryDark">@color/holo_blue_dark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="android:windowBackground">@color/windows_back_ground</item>
     </style>
     <!--全屏-->
     <style name="FullscreenTheme" parent="Theme.AppCompat.NoActionBar">

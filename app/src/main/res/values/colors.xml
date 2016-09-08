@@ -26,4 +26,10 @@
     <!-- 作用于次要的文字提示 -->
     <color name="black_text">#000000</color>
     <color name="Black">#000</color>
+    <color name="windows_back_ground">#F3F3F3</color>
+    <color name="item_bg_pressed">#C7C4BC</color>
+
+
+    <!-- A dark Holo shade of blue -->
+    <color name="holo_blue_dark">#ff0099cc</color>
 </resources>

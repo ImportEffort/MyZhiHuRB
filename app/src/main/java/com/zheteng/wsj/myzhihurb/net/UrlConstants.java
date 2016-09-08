@@ -8,4 +8,5 @@ public interface UrlConstants {
     String BaseUrl = "http://news-at.zhihu.com";
     String SplashUrl = BaseUrl + "/api/4/start-image/1080*1776";
     String ThemeUrl = BaseUrl + "/api/4/themes";//侧边栏数据
+    String LastUrl = BaseUrl + "/api/4/news/latest";//首页数据
 }
