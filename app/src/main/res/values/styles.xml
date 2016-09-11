@@ -23,4 +23,16 @@
         <item name="color">@android:color/white</item>
     </style>
 
+    <style name="WidgetSplashBottonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/dp60</item>
+        <item name="android:paddingRight">@dimen/dp80</item>
+        <item name="android:drawablePadding">@dimen/dp10</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:background">@drawable/selector_btn_login</item>
+        <item name="android:textColor">@color/light_black_text</item>
+    </style>
+
+
 </resources>

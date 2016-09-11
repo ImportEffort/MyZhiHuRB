@@ -1,15 +1,16 @@
-package com.zheteng.wsj.myzhihurb.activity;
+package com.zheteng.wsj.myzhihurb.ui.activity;
 
-import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.zheteng.wsj.myzhihurb.R;
@@ -17,68 +18,87 @@ import com.zheteng.wsj.myzhihurb.fragment.HomeFragment;
 import com.zheteng.wsj.myzhihurb.fragment.NavFragment;
 import com.zheteng.wsj.myzhihurb.util.ToastUtil;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String NAV_FRAGMENT = "nav_fragment";
     private static final String HOME_FRGMENT = "home_frgment";//ctrl shif U
     @InjectView(R.id.toolbar)
-    Toolbar toolbar;
+    Toolbar mToolbar;
     @InjectView(R.id.fl_content)
-    FrameLayout flContent;
+    FrameLayout mFlContent;
     @InjectView(R.id.navigation_fragment)
-    FrameLayout navigationFragment;
+    FrameLayout mNavigationFragment;
     @InjectView(R.id.drawerlayout)
-    DrawerLayout drawerlayout;
-    private ActionBarDrawerToggle drawerToggle;
+    DrawerLayout mDrawerlayout;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+    protected Activity setActivity() {
+        return this;
+    }
 
-        setToolBar();
+    @Override
+    public int getLayoutResID() {
+        return R.layout.activity_main;
+    }
 
-        initNavFragment();
+    @Override
+    public void initListener() {
+        
+    }
+
+    @Override
+    public void initData() {
+        intNavFragment();
+    }
+
+
+   
+
+    @Override
+    public void setToolBar() {
+        super.setToolBar();
+
+        mToolbar.setTitle("首页");
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerlayout, mToolbar, 0, 0);
+
+        mDrawerToggle.syncState();
+        mDrawerlayout.addDrawerListener(mDrawerToggle);
+
+        setSupportActionBar(mToolbar);
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 
-    private void setToolBar() {
+    private void intNavFragment() {
 
-        toolbar.setTitle("首页");
-        toolbar.setTitleTextColor(getResources().getColor(R.color.write));
-        drawerToggle = new ActionBarDrawerToggle(this,drawerlayout,toolbar,0,0);
-
-        drawerToggle.syncState();
-        drawerlayout.addDrawerListener(drawerToggle);
-
-        setSupportActionBar(toolbar);
-    }
-
-    private void initNavFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        NavFragment fragment = new NavFragment();
-        fragmentTransaction.replace(R.id.navigation_fragment, fragment, NAV_FRAGMENT);
-        fragmentTransaction.commit();
 
-        FragmentTransaction mainFragmentTransaction = fragmentManager.beginTransaction();
-        mainFragmentTransaction.replace(R.id.fl_content,new HomeFragment(),HOME_FRGMENT);
-        mainFragmentTransaction.commit();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        NavFragment fragment = new NavFragment();
+
+        fragmentTransaction.replace(R.id.navigation_fragment, fragment, NAV_FRAGMENT);
+        fragmentTransaction.replace(R.id.fl_content,new HomeFragment(),HOME_FRGMENT);
+        fragmentTransaction.commit();
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
             case android.R.id.home:
-                drawerToggle.onOptionsItemSelected(item);
+                mDrawerToggle.onOptionsItemSelected(item);
                 return true;
             case R.id.toolbar_logIn:
-                ToastUtil.show("login");
+                startActivity(new Intent(this,SplashLogActivity.class));
                 return true;
             case R.id.toolbar_dark_theme:
                 ToastUtil.show("dark_theme");
@@ -103,11 +123,11 @@ public class MainActivity extends AppCompatActivity {
      * 关闭侧边栏
      */
     public void closeMenu(){
-        drawerlayout.closeDrawer(Gravity.LEFT);
+        mDrawerlayout.closeDrawer(Gravity.LEFT);
     }
 
     public void setToolBarTitle(String name) {
 
-        toolbar.setTitle(name);
+        mToolbar.setTitle(name);
     }
 }

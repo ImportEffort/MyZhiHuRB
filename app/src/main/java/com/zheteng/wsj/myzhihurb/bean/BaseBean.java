@@ -12,13 +12,6 @@ public class BaseBean {
     private int type;
     private int id;
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
 
     public int getId() {
         return id;
@@ -40,7 +33,4 @@ public class BaseBean {
         return images;
     }
 
-    public void setImages(List<String> images) {
-        this.images = images;
-    }
 }

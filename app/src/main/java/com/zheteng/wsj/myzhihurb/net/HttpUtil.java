@@ -4,8 +4,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import com.zheteng.wsj.myzhihurb.util.LogUtil;
-
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -42,7 +40,7 @@ public class HttpUtil {
         String cahce = CacheMananger.getInstance().loadCahce(url);
         //如果该url地址内容存在缓存则返回缓存数据
         if (!TextUtils.isEmpty(cahce)){
-            LogUtil.e("返回的是缓存数据");
+            //LogUtil.e("返回的是缓存数据");
             callInterface.onSuccess(mCall,cahce);
             return;
         }
@@ -63,7 +61,7 @@ public class HttpUtil {
                 final String result = response.body().string();
                 //请求成功保存缓存数据
                 CacheMananger.getInstance().saveCache(url,result);
-                LogUtil.e("返回的是网络");
+               // LogUtil.e("返回的是网络");
 
                 mHanlder.post(new Runnable() {
                     @Override

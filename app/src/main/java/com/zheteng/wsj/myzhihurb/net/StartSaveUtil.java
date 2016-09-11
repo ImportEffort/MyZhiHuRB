@@ -32,7 +32,7 @@ public class StartSaveUtil {
 
     private StartSaveUtil() {
 
-        LogUtil.e(savePath);
+        //LogUtil.e(savePath);
         File saveFile = new File(savePath);
         if (!saveFile.exists()) {
             saveFile.mkdirs();
@@ -53,6 +53,7 @@ public class StartSaveUtil {
         File desFile = new File(savePath, "startDes.txt");
         //保存图片描述
         copyDes(des, desFile);
+        LogUtil.e("保存启动页面数据成功");
 
     }
 
@@ -145,7 +146,7 @@ public class StartSaveUtil {
         String dispalyUrl = null;
 
         if (imageFile.exists() && imageFile.length() > 0){
-            dispalyUrl =  "file://" + imageFile.getAbsolutePath();
+            dispalyUrl =  "file:/" + imageFile.getAbsolutePath();
         }
 
         return dispalyUrl;

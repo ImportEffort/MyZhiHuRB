@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.squareup.leakcanary.LeakCanary;
 
 /**
  * Created by wsj20 on 2016/9/6.
@@ -18,7 +19,7 @@ public class GlobalApplication  extends Application{
         super.onCreate();
         context = this;
         //内存泄漏检测工具
-       // LeakCanary.install(this);
+       LeakCanary.install(this);
         //初始化ImageLoader
         initImageLoader();
     }

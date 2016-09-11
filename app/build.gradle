@@ -34,4 +34,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:5.1.1'
     compile 'com.bigkoo:convenientbanner:2.0.5'
     compile 'com.android.support:support-v4:24.2.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
 }

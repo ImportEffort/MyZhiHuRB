@@ -14,15 +14,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zheteng.wsj.myzhihurb.R;
-import com.zheteng.wsj.myzhihurb.activity.DetailActivity;
 import com.zheteng.wsj.myzhihurb.adapter.HeaderRecycleViewAdapter;
 import com.zheteng.wsj.myzhihurb.bean.BaseBean;
 import com.zheteng.wsj.myzhihurb.bean.BeforeNewsBean;
 import com.zheteng.wsj.myzhihurb.bean.NewsBean;
+import com.zheteng.wsj.myzhihurb.global.Constants;
 import com.zheteng.wsj.myzhihurb.net.HttpUtil;
 import com.zheteng.wsj.myzhihurb.net.ImageUtil;
 import com.zheteng.wsj.myzhihurb.net.OkHttpCallBackForString;
-import com.zheteng.wsj.myzhihurb.net.UrlConstants;
+import com.zheteng.wsj.myzhihurb.ui.activity.DetailActivity;
 import com.zheteng.wsj.myzhihurb.util.GsonUtil;
 import com.zheteng.wsj.myzhihurb.util.LogUtil;
 import com.zheteng.wsj.myzhihurb.view.PullUpRecyclerView;
@@ -83,7 +83,7 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     }
 
     private void loadData() {
-        HttpUtil.getInstance().getJsonString(UrlConstants.NewsUrl + mUrlId, new OkHttpCallBackForString() {
+        HttpUtil.getInstance().getJsonString(Constants.NewsPrefixUrl + mUrlId, new OkHttpCallBackForString() {
             @Override
             public void onFailure(Call call, Exception e) {
 
@@ -99,7 +99,9 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 initHeaderData(description, imageUrl);
                 //RecycleView需要的数据
                 List<BaseBean> stories = newsBean.getStories();
+
                 mBeforeId = stories.get(stories.size() - 1).getId();//请求之前数据的id
+
                 initRecycleData(stories);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
@@ -165,7 +167,8 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @Override
     public void pullToLoadData() {
 
-        String url = String.format(UrlConstants.NewsBeforeUrl,mUrlId,mBeforeId);
+        String url = String.format(Constants.NewsBeforeUrl,mUrlId,mBeforeId);
+
         HttpUtil.getInstance().getJsonString(url , new OkHttpCallBackForString() {
             @Override
             public void onFailure(Call call, Exception e) {
@@ -190,10 +193,10 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onItemClick(int position, String data) {
-        LogUtil.e(UrlConstants.NewsDetailUrl + data);
+        LogUtil.e(Constants.NewsDetailUrl + data);
 
         Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra(UrlConstants.NEWS_ID, data);
+        intent.putExtra(Constants.NEWS_ID, data);
         startActivity(intent);
     }
 }

@@ -1,5 +1,8 @@
 package com.zheteng.wsj.myzhihurb.adapter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,8 @@ import android.widget.TextView;
 
 import com.zheteng.wsj.myzhihurb.R;
 import com.zheteng.wsj.myzhihurb.bean.BaseBean;
+import com.zheteng.wsj.myzhihurb.global.Constants;
+import com.zheteng.wsj.myzhihurb.global.GlobalApplication;
 import com.zheteng.wsj.myzhihurb.net.ImageUtil;
 
 import java.util.ArrayList;
@@ -20,10 +25,10 @@ import java.util.List;
 public class HeaderRecycleViewAdapter extends RecyclerView.Adapter {
     public static final int TYPE_HEADER = 0;//Header标志
     public static final int TYPE_NORMAL = 1;//正常的条目标志
-
+    private static final String CLICKED_ITEM = "clicked_item";
     private View mHeaderView;//头布局
     private ArrayList<BaseBean> mDatas = new ArrayList<>();
-
+    private SharedPreferences sharedPreferences = GlobalApplication.context.getSharedPreferences(Constants.SP_NAME, Context.MODE_APPEND);
     private OnItemClickListener mListener;
 
     /**
@@ -124,7 +129,7 @@ public class HeaderRecycleViewAdapter extends RecyclerView.Adapter {
      * @param position 此处的position从0开始，如果添加的头部0处就是headerView 这里是RecycleView内部真实的条目位置，包括头布局
      */
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         //如果当前条目是headerView的话则不需要设置数据类型，直接返回
         if (getItemViewType(position) == TYPE_HEADER)
             return;
@@ -139,27 +144,55 @@ public class HeaderRecycleViewAdapter extends RecyclerView.Adapter {
         if (holder instanceof Holder) {
             //由此可以看出实际上holder会向强转为对应的holder类型。
             //这里设置条目布局的显示的内容
+
+
             ((Holder) holder).mTv_des.setText(storiesBean.getTitle());
+
+            String savedId = sharedPreferences.getString(CLICKED_ITEM, "");
+
+            if (savedId.contains(String.valueOf(storiesBean.getId()))) {
+                ((Holder) holder).mTv_des.setTextColor(Color.GRAY);
+            } else {
+                ((Holder) holder).mTv_des.setTextColor(Color.BLACK);
+            }
+
 
             if (storiesBean.getImages() != null) {
                 if (storiesBean.getImages().size() > 0) {
                     ImageUtil.getInstance().displayImageDefault(storiesBean.getImages().get(0), ((Holder) holder).mIv_image);
                 }
-            }else {
+            } else {
                 ((Holder) holder).mIv_image.setVisibility(View.GONE);
             }
+
             //条目点击事件
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mListener != null) {
-                        mListener.onItemClick(pos, storiesBean.getId()+"");
+                        mListener.onItemClick(pos, storiesBean.getId() + "");
+                        //保存已经点击的条目的ID
+                        saveItemCliced(storiesBean.getId());
+                        ((Holder) holder).mTv_des.setTextColor(Color.GRAY);
                     }
                 }
             });
         }
 
 
+    }
+
+    /**
+     * 保存已经 被点击条目的id 当其他页面使用了这个adpter后，
+     *
+     * @param id
+     */
+    private void saveItemCliced(int id) {
+
+        String savedString = sharedPreferences.getString(CLICKED_ITEM, "");
+        StringBuilder builder = new StringBuilder(savedString);
+        builder.append(String.valueOf(id) + ",");
+        sharedPreferences.edit().putString(CLICKED_ITEM, builder.toString()).commit();
     }
 
     /**
@@ -189,6 +222,8 @@ public class HeaderRecycleViewAdapter extends RecyclerView.Adapter {
 
             //这里返回正常条目的布局类型
             mTv_des = (TextView) itemView.findViewById(R.id.tv_items_Des);
+
+
             mIv_image = (ImageView) itemView.findViewById(R.id.iv_items_image);
 
         }

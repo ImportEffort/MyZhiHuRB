@@ -16,14 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zheteng.wsj.myzhihurb.R;
-import com.zheteng.wsj.myzhihurb.activity.DetailActivity;
 import com.zheteng.wsj.myzhihurb.adapter.HeaderRecycleViewAdapter;
 import com.zheteng.wsj.myzhihurb.adapter.LoopViewpagerIndater;
 import com.zheteng.wsj.myzhihurb.bean.BaseBean;
 import com.zheteng.wsj.myzhihurb.bean.LastNewBean;
+import com.zheteng.wsj.myzhihurb.global.Constants;
 import com.zheteng.wsj.myzhihurb.net.HttpUtil;
 import com.zheteng.wsj.myzhihurb.net.OkHttpCallBackForString;
-import com.zheteng.wsj.myzhihurb.net.UrlConstants;
+import com.zheteng.wsj.myzhihurb.ui.activity.DetailActivity;
 import com.zheteng.wsj.myzhihurb.util.GsonUtil;
 import com.zheteng.wsj.myzhihurb.view.PullUpRecyclerView;
 
@@ -89,6 +89,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         adapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLoadMoreListener(this);
+
         return view;
     }
 
@@ -115,7 +116,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onPagerClick(int id) {
                 Intent intent = new Intent(getActivity(),DetailActivity.class);
-                intent.putExtra(UrlConstants.NEWS_ID,id+"");
+                intent.putExtra(Constants.NEWS_ID,id+"");
                 startActivity(intent);
             }
         });
@@ -128,9 +129,16 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         initlooper();
     }
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //EventBus.getDefault().unregister(this);//反注册EventBus
+    }
+
     private void loadData() {
 
-        HttpUtil.getInstance().getJsonString(UrlConstants.LastUrl, new OkHttpCallBackForString() {
+        HttpUtil.getInstance().getJsonString(Constants.LastUrl, new OkHttpCallBackForString() {
             @Override
             public void onFailure(Call call, Exception e) {
             }
@@ -138,7 +146,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onSuccess(Call call, String result) {
 
-                //LogUtil.e("当前线程" + Thread.currentThread().getName());
+             //LogUtil.e("当前线程" + Thread.currentThread().getName());
 
                 LastNewBean lastNewBean = GsonUtil.parseJsonToBean(result, LastNewBean.class);
                 mLastData = lastNewBean.getDate();
@@ -249,7 +257,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void pullToLoadData() {
 
-        HttpUtil.getInstance().getJsonString(UrlConstants.BeforeUrl + mLastData, new OkHttpCallBackForString() {
+        HttpUtil.getInstance().getJsonString(Constants.BeforeUrl + mLastData, new OkHttpCallBackForString() {
             @Override
             public void onFailure(Call call, Exception e) {
             }
@@ -277,7 +285,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         //BaseBean baseBean = mLastNewBean.getStories().get(position);
 
         Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra(UrlConstants.NEWS_ID, data);
+        intent.putExtra(Constants.NEWS_ID, data);
         startActivity(intent);
     }
 }

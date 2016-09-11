@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
+    tools:context=".ui.activity.SplashLogActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_splash_login"
+        android:layout_width="match_parent"
+        android:background="#00A2ED"
+        android:layout_height="?android:actionBarSize">
+    </android.support.v7.widget.Toolbar>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/splash_logo"/>
+
+    <TextView
+        android:id="@+id/tv_splash_logIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/dp20"
+        android:text="使用微博登陆"
+        android:textColor="#C7ECFD"
+        android:textSize="18sp"/>
+
+    <Button
+        android:id="@+id/btn_splash_sina"
+        style="@style/WidgetSplashBottonStyle"
+        android:layout_below="@id/tv_splash_logIn"
+        android:drawableLeft="@drawable/account_sina"
+        android:text="新浪微博"/>
+
+    <Button
+        android:id="@+id/btn_splash_tencent"
+        style="@style/WidgetSplashBottonStyle"
+        android:layout_below="@id/btn_splash_sina"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/account_tencent"
+        android:text="腾讯微博"/>
+
+</RelativeLayout>

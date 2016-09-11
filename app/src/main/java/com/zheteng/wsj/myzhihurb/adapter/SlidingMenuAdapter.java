@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zheteng.wsj.myzhihurb.R;
-import com.zheteng.wsj.myzhihurb.bean.NavBean;
+import com.zheteng.wsj.myzhihurb.bean.SlidingMenuBean;
 import com.zheteng.wsj.myzhihurb.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -21,15 +21,15 @@ import butterknife.InjectView;
 /**
  * Created by wsj20 on 2016/9/8.
  */
-public class NavAdapter extends BaseAdapter {
+public class SlidingMenuAdapter extends BaseAdapter {
 
     private  int selectItem = -1;
 
     private Context context;
-//    private List<NavBean.OthersBean> data;
-    private ArrayList<NavBean.OthersBean> data = new ArrayList<>();
+//    private List<SlidingMenuBean.OthersBean> data;
+    private ArrayList<SlidingMenuBean.OthersBean> data = new ArrayList<>();
 
-    public NavAdapter(Context context) {
+    public SlidingMenuAdapter(Context context) {
         this.context = context;
     }
 
@@ -40,6 +40,15 @@ public class NavAdapter extends BaseAdapter {
         }
     }
 
+    /**
+     * 设置侧边栏数据显示
+     * @param data
+     */
+    public void setData(List<SlidingMenuBean.OthersBean> data) {
+        this.data = (ArrayList<SlidingMenuBean.OthersBean>) data;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         if (data != null) {
@@ -47,13 +56,10 @@ public class NavAdapter extends BaseAdapter {
         } else {
             return 0;
         }
-
     }
 
     @Override
     public Object getItem(int position) {
-
-
         return data.get(position);
     }
 
@@ -71,13 +77,12 @@ public class NavAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
+        //改变listview选中条目的颜色
         if (selectItem == position) {
             viewHolder.rlItem.setBackgroundColor(context.getResources().getColor(R.color.light_gray));
         }else {
             viewHolder.rlItem.setBackgroundColor(context.getResources().getColor(R.color.write));
         }
-
         viewHolder.tvTitle.setText(data.get(position).getName());
         viewHolder.tvFollow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,15 +90,7 @@ public class NavAdapter extends BaseAdapter {
                 ToastUtil.show("关注成功，关注内容以后会在主页呈现");
             }
         });
-
-
         return convertView;
-    }
-
-
-    public void setData(List<NavBean.OthersBean> data) {
-        this.data = (ArrayList<NavBean.OthersBean>) data;
-        notifyDataSetChanged();
     }
 
     static class ViewHolder {
@@ -108,7 +105,5 @@ public class NavAdapter extends BaseAdapter {
             ButterKnife.inject(this, view);
             view.setTag(this);
         }
-
-
     }
 }
