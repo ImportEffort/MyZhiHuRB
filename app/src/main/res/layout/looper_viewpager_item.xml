@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
 
-    android:layout_height="match_parent">
-
-
-    <ImageView
-        android:id="@+id/iv_viewpager_looper"
+    <FrameLayout
+        android:id="@+id/fl_top_cotent"
+        android:foreground="@drawable/translate"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iv_viewpager_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
+    </FrameLayout>
 
     <TextView
-        android:background="#66363534"
         android:id="@+id/tv_viewpager_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:layout_above="@+id/viewPager_indicator"
-        android:layout_margin="10dp"
+        android:layout_marginBottom="@dimen/dp10"
         android:maxLines="2"
-        android:text="黄鹤王八蛋"
+        android:padding="@dimen/dp20"
         android:textColor="@color/white_text"
-        android:textSize="20sp" />
-
+        android:textSize="20sp"/>
 
 </RelativeLayout>

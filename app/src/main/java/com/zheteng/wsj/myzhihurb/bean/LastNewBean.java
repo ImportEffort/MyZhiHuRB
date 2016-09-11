@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by wsj20 on 2016/9/8.
  */
-public class LastNewBean {
+public class LastNewBean extends BaseBean{
 
 
     /**
@@ -23,7 +23,7 @@ public class LastNewBean {
      * title : 这片子连玩笑都牢牢扎根现实，编剧最怕观众说他瞎编
      */
 
-    private List<StoriesBean> stories;
+    private List<BaseBean> stories;
     /**
      * image : http://pic3.zhimg.com/43376360fd438a725ee658f310b50d82.jpg
      * type : 0
@@ -42,11 +42,11 @@ public class LastNewBean {
         this.date = date;
     }
 
-    public List<StoriesBean> getStories() {
+    public List<BaseBean> getStories() {
         return stories;
     }
 
-    public void setStories(List<StoriesBean> stories) {
+    public void setStories(List<BaseBean> stories) {
         this.stories = stories;
     }
 
@@ -58,12 +58,15 @@ public class LastNewBean {
         this.top_stories = top_stories;
     }
 
-    public static class StoriesBean {
+    public static class StoriesBean extends BaseBean{
         private int type;
         private int id;
         private String ga_prefix;
         private String title;
         private List<String> images;
+
+
+
 
         public int getType() {
             return type;

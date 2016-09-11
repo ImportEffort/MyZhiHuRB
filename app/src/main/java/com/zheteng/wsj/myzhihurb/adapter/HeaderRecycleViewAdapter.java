@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zheteng.wsj.myzhihurb.R;
-import com.zheteng.wsj.myzhihurb.bean.LastNewBean;
-import com.zheteng.wsj.myzhihurb.util.ImageUtil;
+import com.zheteng.wsj.myzhihurb.bean.BaseBean;
+import com.zheteng.wsj.myzhihurb.net.ImageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class HeaderRecycleViewAdapter extends RecyclerView.Adapter {
     public static final int TYPE_NORMAL = 1;//正常的条目标志
 
     private View mHeaderView;//头布局
-    private ArrayList<LastNewBean.StoriesBean> mDatas = new ArrayList<>();
+    private ArrayList<BaseBean> mDatas = new ArrayList<>();
 
     private OnItemClickListener mListener;
 
@@ -43,6 +43,7 @@ public class HeaderRecycleViewAdapter extends RecyclerView.Adapter {
 
     public void setHeaderView(View headerView) {
         mHeaderView = headerView;
+
         notifyItemInserted(0);//添加一个View在第0个位置，并通知recyclerView条目位置的改变
     }
 
@@ -51,16 +52,27 @@ public class HeaderRecycleViewAdapter extends RecyclerView.Adapter {
     }
 
     /**
+     * 返回添加头布局后真实的条目数据
+     *
+     * @return
+     */
+
+    @Override
+    public int getItemCount() {
+        return mHeaderView == null ? mDatas.size() : mDatas.size() + 1;
+    }
+
+    /**
      * 设置数据 每次调用addDatas RecyclerView的内容就会重新加载
      *
      * @param datas 集合
      */
-    public void addDatas(List<LastNewBean.StoriesBean> datas) {
+    public void addDatas(List<BaseBean> datas) {
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 
-    public void setDatas(List<LastNewBean.StoriesBean> datas) {
+    public void setDatas(List<BaseBean> datas) {
         mDatas.clear();
         mDatas.addAll(datas);
         notifyDataSetChanged();
@@ -108,7 +120,7 @@ public class HeaderRecycleViewAdapter extends RecyclerView.Adapter {
     /**
      * 为条目设置内容显示
      *
-     * @param holder 此参数表示每个条目的holder对象 如果有不同的条目类型，则holder的类型可能不同
+     * @param holder   此参数表示每个条目的holder对象 如果有不同的条目类型，则holder的类型可能不同
      * @param position 此处的position从0开始，如果添加的头部0处就是headerView 这里是RecycleView内部真实的条目位置，包括头布局
      */
     @Override
@@ -120,7 +132,7 @@ public class HeaderRecycleViewAdapter extends RecyclerView.Adapter {
         //如果没有设置头布局则从这里还是显示 我们需要拿到真正的位置然后从集合取数据 如果有头布局则position位置总是比没有添加头布局前大1
 
         final int pos = getRealPostion(holder);
-        LastNewBean.StoriesBean storiesBean = mDatas.get(pos);
+        final BaseBean storiesBean = mDatas.get(pos);
 
 
         //如果这里不进行判断，下步强转的时候有可能导致类型转换失败
@@ -128,14 +140,20 @@ public class HeaderRecycleViewAdapter extends RecyclerView.Adapter {
             //由此可以看出实际上holder会向强转为对应的holder类型。
             //这里设置条目布局的显示的内容
             ((Holder) holder).mTv_des.setText(storiesBean.getTitle());
-            ImageUtil.getInstance().displayImageDefault(storiesBean.getImages().get(0),((Holder) holder).mIv_image);
 
+            if (storiesBean.getImages() != null) {
+                if (storiesBean.getImages().size() > 0) {
+                    ImageUtil.getInstance().displayImageDefault(storiesBean.getImages().get(0), ((Holder) holder).mIv_image);
+                }
+            }else {
+                ((Holder) holder).mIv_image.setVisibility(View.GONE);
+            }
             //条目点击事件
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mListener != null) {
-                        mListener.onItemClick(pos,"haha");
+                        mListener.onItemClick(pos, storiesBean.getId()+"");
                     }
                 }
             });
@@ -145,7 +163,6 @@ public class HeaderRecycleViewAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     *
      * @param holder
      * @return 返回减去头布局个数的Postion
      */
@@ -155,11 +172,6 @@ public class HeaderRecycleViewAdapter extends RecyclerView.Adapter {
 
     }
 
-
-    @Override
-    public int getItemCount() {
-        return mHeaderView == null ? mDatas.size() : mDatas.size() + 1;
-    }
 
     /**
      * 为adapter提供view的Holder对象

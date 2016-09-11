@@ -1,4 +1,4 @@
-package com.zheteng.wsj.myzhihurb.util;
+package com.zheteng.wsj.myzhihurb.net;
 
 import android.Manifest;
 import android.app.Activity;
@@ -15,6 +15,9 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.zheteng.wsj.myzhihurb.R;
 import com.zheteng.wsj.myzhihurb.global.GlobalApplication;
+import com.zheteng.wsj.myzhihurb.util.LogUtil;
+import com.zheteng.wsj.myzhihurb.util.StreamUtils;
+import com.zheteng.wsj.myzhihurb.util.ToastUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -174,9 +177,9 @@ public class ImageUtil {
     private interface ImageLoaderOptions {
 
         DisplayImageOptions fadein_options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.mipmap.default_image)// 设置加载中显示什么图片
-                .showImageForEmptyUri(R.mipmap.default_image)// 设置如果url为空中显示什么图片
-                .showImageOnFail(R.mipmap.default_image)// 设置加载失败显示什么图片
+                .showImageOnLoading(R.drawable.default_image)// 设置加载中显示什么图片
+                .showImageForEmptyUri(R.drawable.default_image)// 设置如果url为空中显示什么图片
+                .showImageOnFail(R.drawable.default_image)// 设置加载失败显示什么图片
                 .cacheInMemory(true)// 内存缓存
                 .cacheOnDisk(true)// 在硬盘缓存
                 .imageScaleType(ImageScaleType.EXACTLY)//内部会对图片进一步的压缩
@@ -191,6 +194,5 @@ public class ImageUtil {
                 .bitmapConfig(Bitmap.Config.RGB_565)//使用比较节省内存的颜色模式
                 .displayer(new FadeInBitmapDisplayer(1500)).build();// 设置渐渐显示的动画效果
     }
-
 
 }

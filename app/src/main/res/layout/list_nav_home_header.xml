@@ -15,7 +15,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dp10"
             android:layout_marginRight="@dimen/dp10"
-            android:src="@mipmap/home" />
+            android:src="@drawable/home" />
 
         <TextView
             android:id="@+id/tv_main"

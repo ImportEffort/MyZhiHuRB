@@ -1,4 +1,4 @@
-package com.zheteng.wsj.myzhihurb.util;
+package com.zheteng.wsj.myzhihurb.net;
 
 import android.Manifest;
 import android.app.Activity;
@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Environment;
 
 import com.zheteng.wsj.myzhihurb.global.GlobalApplication;
+import com.zheteng.wsj.myzhihurb.util.LogUtil;
+import com.zheteng.wsj.myzhihurb.util.StreamUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -1,5 +1,6 @@
 package com.zheteng.wsj.myzhihurb.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,21 +11,21 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.zheteng.wsj.myzhihurb.R;
+import com.zheteng.wsj.myzhihurb.activity.DetailActivity;
 import com.zheteng.wsj.myzhihurb.adapter.HeaderRecycleViewAdapter;
 import com.zheteng.wsj.myzhihurb.adapter.LoopViewpagerIndater;
+import com.zheteng.wsj.myzhihurb.bean.BaseBean;
 import com.zheteng.wsj.myzhihurb.bean.LastNewBean;
 import com.zheteng.wsj.myzhihurb.net.HttpUtil;
 import com.zheteng.wsj.myzhihurb.net.OkHttpCallBackForString;
 import com.zheteng.wsj.myzhihurb.net.UrlConstants;
 import com.zheteng.wsj.myzhihurb.util.GsonUtil;
-import com.zheteng.wsj.myzhihurb.util.LogUtil;
-import com.zheteng.wsj.myzhihurb.util.ToastUtil;
+import com.zheteng.wsj.myzhihurb.view.PullUpRecyclerView;
 
 import java.util.List;
 
@@ -36,11 +37,11 @@ import okhttp3.Call;
 /**
  * Created by wsj20 on 2016/9/8.
  */
-public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, PullUpRecyclerView.OnLoadMoreListener, HeaderRecycleViewAdapter.OnItemClickListener {
 
 
     private static final int LOOPER_MESSAGE = 1000;
-    private static final long TOP_NEWS_CHANGE_TIME = 2000;
+    private static final long TOP_NEWS_CHANGE_TIME = 4000;
     @InjectView(R.id.viewPager_main)
     ViewPager mViewPagerMain;
     @InjectView(R.id.indicator)
@@ -49,10 +50,13 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private View mHeaderView;
     private boolean isLooper = false;
     private LoopViewpagerIndater mIndaterAdapter;
-    private RecyclerView mRecyclerView;
+    private PullUpRecyclerView mRecyclerView;
     private final static int REFRESH = 0;
     private final static int LOADMORE = 1;
     private int loadAction = 0;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private String mLastData;//最新消息的日期
+
 
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -63,27 +67,36 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 currentItem = -1;
             }
             mViewPagerMain.setCurrentItem(currentItem + 1);
-            sendEmptyMessageDelayed(LOOPER_MESSAGE, 2000);
+            sendEmptyMessageDelayed(LOOPER_MESSAGE, TOP_NEWS_CHANGE_TIME);
         }
     };
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private LastNewBean mLastNewBean;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        mRecyclerView = (PullUpRecyclerView) view.findViewById(R.id.recyclerView);
+        //初始化下拉刷新
         initSwipeRefreshLayout(view);
-
+        //初始化头布局
         initHeaderView(inflater, container);
+        //初始化mRecyclerView
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter = new HeaderRecycleViewAdapter();
+        adapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(adapter);
-
+        mRecyclerView.setLoadMoreListener(this);
         return view;
     }
 
+    /**
+     * 初始化下拉刷新控件
+     *
+     * @param view
+     */
     private void initSwipeRefreshLayout(View view) {
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android
@@ -93,11 +106,19 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
-    private void initHeaderView(LayoutInflater inflater, @Nullable ViewGroup container) {
+    private void initHeaderView(final LayoutInflater inflater, @Nullable ViewGroup container) {
         mHeaderView = inflater.inflate(R.layout.fragment_home_header, container, false);
         ButterKnife.inject(this, mHeaderView);
         mIndaterAdapter = new LoopViewpagerIndater();
-
+        //点击跳转到详情界面
+        mIndaterAdapter.setOnPagerClickLisener(new LoopViewpagerIndater.OnPagerClickLisener() {
+            @Override
+            public void onPagerClick(int id) {
+                Intent intent = new Intent(getActivity(),DetailActivity.class);
+                intent.putExtra(UrlConstants.NEWS_ID,id+"");
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -112,17 +133,22 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         HttpUtil.getInstance().getJsonString(UrlConstants.LastUrl, new OkHttpCallBackForString() {
             @Override
             public void onFailure(Call call, Exception e) {
-
             }
 
             @Override
             public void onSuccess(Call call, String result) {
+
+                //LogUtil.e("当前线程" + Thread.currentThread().getName());
+
                 LastNewBean lastNewBean = GsonUtil.parseJsonToBean(result, LastNewBean.class);
+                mLastData = lastNewBean.getDate();
+                //LogUtil.e("mData" + lastNewBean.getDate());
+
                 //轮播图需要数据
                 List<LastNewBean.TopStoriesBean> top_stories = lastNewBean.getTop_stories();
                 initHeaderData(top_stories);
                 //RecycleView需要的数据
-                List<LastNewBean.StoriesBean> stories = lastNewBean.getStories();
+                List<BaseBean> stories = lastNewBean.getStories();
                 initRecycleData(stories);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
@@ -134,7 +160,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
      *
      * @param stories
      */
-    private void initRecycleData(List<LastNewBean.StoriesBean> stories) {
+    private void initRecycleData(List<BaseBean> stories) {
 
         if (loadAction == 0) {
             adapter.setDatas(stories);
@@ -142,13 +168,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             adapter.addDatas(stories);
         }
         adapter.setHeaderView(mHeaderView);
-        adapter.setOnItemClickListener(new HeaderRecycleViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, String data) {
-                ToastUtil.show("" + position);
-                LogUtil.e(data);
-            }
-        });
 
     }
 
@@ -164,6 +183,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             mIndaterAdapter.addData(top_stories);
         }
         mViewPagerMain.setAdapter(mIndaterAdapter);
+
         mIndicator.setViewPager(mViewPagerMain);
 
     }
@@ -189,7 +209,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 switch (state) {
                     case ViewPager.SCROLL_STATE_IDLE://0
                         if (!isLooper) {
-                            mHandler.sendEmptyMessageDelayed(LOOPER_MESSAGE, 2000);
+                            mHandler.sendEmptyMessageDelayed(LOOPER_MESSAGE, TOP_NEWS_CHANGE_TIME);
                             isLooper = true;
                         }
                         break;
@@ -200,7 +220,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 }
             }
         });
-        mHandler.sendEmptyMessageDelayed(LOOPER_MESSAGE, 2000);
+        mHandler.sendEmptyMessageDelayed(LOOPER_MESSAGE, TOP_NEWS_CHANGE_TIME);
         isLooper = true;
     }
 
@@ -222,8 +242,42 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        loadAction = 0;
+        loadAction = REFRESH;
         loadData();
-//        mRecyclerView.set
+    }
+
+    @Override
+    public void pullToLoadData() {
+
+        HttpUtil.getInstance().getJsonString(UrlConstants.BeforeUrl + mLastData, new OkHttpCallBackForString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+            }
+
+            @Override
+            public void onSuccess(Call call, String result) {
+
+                loadAction = LOADMORE;
+
+                mLastNewBean = GsonUtil.parseJsonToBean(result, LastNewBean.class);
+                mLastData = mLastNewBean.getDate();
+                //LogUtil.e("mData" + lastNewBean.getDate());
+
+                //RecycleView需要的数据
+                List<BaseBean> stories = mLastNewBean.getStories();
+                initRecycleData(stories);
+
+                mRecyclerView.setLoadMoreComplite(true);
+            }
+        });
+    }
+
+    @Override
+    public void onItemClick(int position, String data) {
+        //BaseBean baseBean = mLastNewBean.getStories().get(position);
+
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(UrlConstants.NEWS_ID, data);
+        startActivity(intent);
     }
 }

@@ -3,6 +3,7 @@ package com.zheteng.wsj.myzhihurb.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.zheteng.wsj.myzhihurb.R;
+import com.zheteng.wsj.myzhihurb.activity.MainActivity;
 import com.zheteng.wsj.myzhihurb.adapter.NavAdapter;
 import com.zheteng.wsj.myzhihurb.bean.NavBean;
 import com.zheteng.wsj.myzhihurb.net.HttpUtil;
@@ -29,16 +31,23 @@ public class NavFragment extends ListFragment implements AdapterView.OnItemClick
     private ListView listView;
     private View homeHeaderView;
     private NavAdapter adapter;
+    private FragmentActivity mActivity;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mActivity = getActivity();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //logHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.list_nav_log_header,container,false);
         //logHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.list_nav_home_header,container,false);
-        logHeaderView = View.inflate(getContext(),R.layout.list_nav_log_header,null);
-        homeHeaderView = View.inflate(getContext(),R.layout.list_nav_home_header,null);
+        logHeaderView = View.inflate(getContext(), R.layout.list_nav_log_header, null);
+        homeHeaderView = View.inflate(getContext(), R.layout.list_nav_home_header, null);
 
         ImageView iv_userIcon = (ImageView) logHeaderView.findViewById(R.id.icon_user);
-        return inflater.inflate(R.layout.fragment_nav,container,false);
+        return inflater.inflate(R.layout.fragment_nav, container, false);
     }
 
     @Override
@@ -50,9 +59,22 @@ public class NavFragment extends ListFragment implements AdapterView.OnItemClick
             public void onClick(View v) {
                 homeHeaderView.setBackgroundColor(getResources().getColor(R.color.light_gray));
                 adapter.changeSelected(-1);
+
+                getFragmentManager().beginTransaction().replace(
+
+                        R.id.fl_content, new HomeFragment()
+
+                ).commit();
+                ((MainActivity) mActivity).closeMenu();
+                ((MainActivity) mActivity).setToolBarTitle("首页");
             }
         });
-
+        logHeaderView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) mActivity).closeMenu();
+            }
+        });
 
         listView = getListView();
 
@@ -93,5 +115,17 @@ public class NavFragment extends ListFragment implements AdapterView.OnItemClick
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         adapter.changeSelected(position);
         homeHeaderView.setBackgroundColor(getResources().getColor(R.color.write));
+        //  NavBean.OthersBean item = (NavBean.OthersBean) adapter.getItem(position); 由于有头布局所以拿到位置不正确
+
+        NavBean.OthersBean item = (NavBean.OthersBean) listView.getItemAtPosition(position);
+        // LogUtil.e(item.getId()+"");
+        getFragmentManager().beginTransaction().replace(
+
+                R.id.fl_content, new NewsFragment(item.getId())//新闻列表的url由
+
+        ).commit();
+
+        ((MainActivity) mActivity).closeMenu();
+        ((MainActivity) mActivity).setToolBarTitle(item.getName());
     }
 }

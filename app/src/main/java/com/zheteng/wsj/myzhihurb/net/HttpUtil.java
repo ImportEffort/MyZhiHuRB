@@ -2,6 +2,9 @@ package com.zheteng.wsj.myzhihurb.net;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
+
+import com.zheteng.wsj.myzhihurb.util.LogUtil;
 
 import java.io.IOException;
 
@@ -35,10 +38,19 @@ public class HttpUtil {
      * @param url           请求的的目的地址
      * @param callInterface 网络请求的回调接口
      */
-    public void getJsonString(String url, final OkHttpCallBackForString callInterface) {
+    public void getJsonString(final String url, final OkHttpCallBackForString callInterface) {
+        String cahce = CacheMananger.getInstance().loadCahce(url);
+        //如果该url地址内容存在缓存则返回缓存数据
+        if (!TextUtils.isEmpty(cahce)){
+            LogUtil.e("返回的是缓存数据");
+            callInterface.onSuccess(mCall,cahce);
+            return;
+        }
+
+        //如果不存在该url地址的缓存 则请求网络数据
+
         Request request = new Request.Builder().url(url).build();
         mCall = mOkHttpClient.newCall(request);
-
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -49,6 +61,10 @@ public class HttpUtil {
             public void onResponse(final Call call, final Response response) throws IOException {
 
                 final String result = response.body().string();
+                //请求成功保存缓存数据
+                CacheMananger.getInstance().saveCache(url,result);
+                LogUtil.e("返回的是网络");
+
                 mHanlder.post(new Runnable() {
                     @Override
                     public void run() {

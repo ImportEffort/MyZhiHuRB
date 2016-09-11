@@ -52,6 +52,8 @@ public class NavAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
+
+
         return data.get(position);
     }
 

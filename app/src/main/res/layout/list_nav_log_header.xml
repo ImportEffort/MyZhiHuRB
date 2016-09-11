@@ -52,7 +52,7 @@
                 android:layout_width="@dimen/dp25"
                 android:layout_height="@dimen/dp25"
                 android:scaleType="fitCenter"
-                android:src="@mipmap/star" />
+                android:src="@drawable/star" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
                 android:layout_width="@dimen/dp25"
                 android:layout_height="@dimen/dp20"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/download" />
+                android:src="@drawable/download" />
 
             <TextView
                 android:id="@+id/tv_download"

@@ -19,13 +19,13 @@ import com.zheteng.wsj.myzhihurb.R;
 import com.zheteng.wsj.myzhihurb.bean.SplashBean;
 import com.zheteng.wsj.myzhihurb.listener.SimpleAnimatorListener;
 import com.zheteng.wsj.myzhihurb.net.HttpUtil;
+import com.zheteng.wsj.myzhihurb.net.ImageUtil;
 import com.zheteng.wsj.myzhihurb.net.OkHttpCallBackForBytes;
 import com.zheteng.wsj.myzhihurb.net.OkHttpCallBackForString;
+import com.zheteng.wsj.myzhihurb.net.StartSaveUtil;
 import com.zheteng.wsj.myzhihurb.net.UrlConstants;
 import com.zheteng.wsj.myzhihurb.util.GsonUtil;
-import com.zheteng.wsj.myzhihurb.util.ImageUtil;
 import com.zheteng.wsj.myzhihurb.util.LogUtil;
-import com.zheteng.wsj.myzhihurb.util.StartSaveUtil;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -90,7 +90,7 @@ public class SplashActivity extends AppCompatActivity {
         if (imageUrl != null ){
             ImageUtil.getInstance().displayImageDefault(imageUrl,imgSplash);
         }else {
-            imgSplash.setImageResource(R.mipmap.start);
+            imgSplash.setImageResource(R.drawable.start);
         }
 
         if (!TextUtils.isEmpty(des)){
