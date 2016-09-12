@@ -1,6 +1,7 @@
 package com.zheteng.wsj.myzhihurb.ui.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -70,8 +71,8 @@ public class HomeFragment extends BaseNewsFragemnt implements LoopViewpagerIndat
         mIndaterAdapter = new LoopViewpagerIndater();
         //点击跳转到详情界面
         mIndaterAdapter.setOnPagerClickLisener(this);
-        mViewPagerMain.setAdapter(mIndaterAdapter);
-        mIndicator.setViewPager(mViewPagerMain);
+       /* mViewPagerMain.setAdapter(mIndaterAdapter);
+        mIndicator.setViewPager(mViewPagerMain);*/
     }
 
     @Override
@@ -125,9 +126,10 @@ public class HomeFragment extends BaseNewsFragemnt implements LoopViewpagerIndat
 
     /**
      * 第一次展示的数据
+     * @param savedInstanceState
      */
     @Override
-    public void initData() {
+    public void initData(Bundle savedInstanceState) {
         //启动页跳转过来的时候先展示缓存数据
         loadData(false);
         startlooper();
@@ -184,10 +186,19 @@ public class HomeFragment extends BaseNewsFragemnt implements LoopViewpagerIndat
         //轮播图需要数据
         List<LastNewBean.TopStoriesBean> top_stories = lastNewBean.getTop_stories();
         initHeaderData(top_stories);
+        mViewPagerMain.setAdapter(mIndaterAdapter);
+        mIndicator.setViewPager(mViewPagerMain);
         //RecycleView需要的数据
         List<BaseBean> stories = lastNewBean.getStories();
         initRecycleData(stories);
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mActivity =null;
+
     }
 
     /**

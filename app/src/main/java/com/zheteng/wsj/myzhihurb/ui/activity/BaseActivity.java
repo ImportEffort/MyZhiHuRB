@@ -26,7 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity implements UiOprati
         setToolBar();
 
         initListener();
-        initData();
+        initData(savedInstanceState);
     }
 
     protected abstract Activity setActivity();

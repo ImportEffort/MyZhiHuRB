@@ -16,6 +16,4 @@
         android:gravity="center"
         android:layout_alignParentBottom="true"
         android:layout_height="20dp"/>
-
-
 </RelativeLayout>

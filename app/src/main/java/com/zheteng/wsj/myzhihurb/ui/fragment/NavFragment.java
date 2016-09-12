@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.zheteng.wsj.myzhihurb.R;
 import com.zheteng.wsj.myzhihurb.adapter.SlidingMenuAdapter;
@@ -20,7 +22,6 @@ import com.zheteng.wsj.myzhihurb.bean.SlidingMenuBean;
 import com.zheteng.wsj.myzhihurb.global.Constants;
 import com.zheteng.wsj.myzhihurb.net.HttpUtil;
 import com.zheteng.wsj.myzhihurb.net.OkHttpCallBackForString;
-import com.zheteng.wsj.myzhihurb.ui.activity.MainActivity;
 import com.zheteng.wsj.myzhihurb.ui.activity.SplashLogActivity;
 import com.zheteng.wsj.myzhihurb.util.GsonUtil;
 
@@ -30,6 +31,7 @@ import okhttp3.Call;
 
 public class NavFragment extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
+    private static final String HOME_FRGMENT = "home_frgment";
     private View logHeaderView;
     private ListView listView;
     private View homeHeaderView;
@@ -37,6 +39,9 @@ public class NavFragment extends ListFragment implements AdapterView.OnItemClick
     private FragmentActivity mActivity;
     private ImageView mIv_userIcon;
     private LinearLayout mll_homeHeader;
+    private TextView mTv_save;
+    private TextView mTv_download;
+    private FragmentManager mFragmentManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +74,7 @@ public class NavFragment extends ListFragment implements AdapterView.OnItemClick
         adapter = new SlidingMenuAdapter(getActivity());
         listView.setAdapter(adapter);
     }
+
     /**
      * 初始化策划菜单，listview的头布局
      */
@@ -77,6 +83,8 @@ public class NavFragment extends ListFragment implements AdapterView.OnItemClick
         homeHeaderView = View.inflate(getContext(), R.layout.list_nav_home_header, null);
         mIv_userIcon = (ImageView) logHeaderView.findViewById(R.id.icon_user);
         mll_homeHeader = (LinearLayout) homeHeaderView.findViewById(R.id.ll_homeheader);
+        mTv_save = (TextView) logHeaderView.findViewById(R.id.tv_save);
+        mTv_download = (TextView) logHeaderView.findViewById(R.id.tv_download);
 
     }
 
@@ -86,6 +94,8 @@ public class NavFragment extends ListFragment implements AdapterView.OnItemClick
     private void initListener() {
         mIv_userIcon.setOnClickListener(this);
         mll_homeHeader.setOnClickListener(this);
+        mTv_save.setOnClickListener(this);
+        mTv_download.setOnClickListener(this);
         listView.setOnItemClickListener(this);
     }
 
@@ -95,13 +105,15 @@ public class NavFragment extends ListFragment implements AdapterView.OnItemClick
             @Override
             public void onFailure(Call call, Exception e) {
             }
+
             @Override
             public void onSuccess(Call call, String result) {
                 SlidingMenuBean navBean = GsonUtil.parseJsonToBean(result, SlidingMenuBean.class);
                 List<SlidingMenuBean.OthersBean> listData = navBean.getOthers();
                 adapter.setData(listData);
             }
-        },false);
+        }, false);
+
 
     }
 
@@ -112,12 +124,10 @@ public class NavFragment extends ListFragment implements AdapterView.OnItemClick
         //adapter.getItem(position) 由于有头布局所以拿到位置不正确
         SlidingMenuBean.OthersBean item = (SlidingMenuBean.OthersBean) listView.getItemAtPosition(position);
         //替换Activity主界面fragment的内容显示
-        getFragmentManager().beginTransaction().replace(
-                R.id.fl_content, new NewsFragment(item.getId())//除了首页外数据需要使用由侧滑菜单的条目id组成url地址
-        ).commit();
 
-        ((MainActivity) mActivity).closeMenu();
-        ((MainActivity) mActivity).setToolBarTitle(item.getName());
+        if (getActivity() instanceof  OnSildingItemClickListener){
+            ((OnSildingItemClickListener) getActivity()).onSildingItemClick(item.getId(),item.getName());
+        }
     }
 
     /**
@@ -133,18 +143,15 @@ public class NavFragment extends ListFragment implements AdapterView.OnItemClick
 
                 homeHeaderView.setBackgroundColor(getResources().getColor(R.color.light_gray));
                 adapter.changeSelected(-1);
-
-                getFragmentManager().beginTransaction().replace(
-
-                        R.id.fl_content, new HomeFragment()
-
-                ).commit();
-                ((MainActivity) mActivity).closeMenu();
-                ((MainActivity) mActivity).setToolBarTitle("首页");
-
+                if (getActivity() instanceof  OnSildingItemClickListener){
+                    ((OnSildingItemClickListener) getActivity()).onSildingItemClick(-1,"首页");
+                }
                 break;
 
         }
     }
 
+    public interface  OnSildingItemClickListener{
+        void onSildingItemClick(int id, String name);
+    }
 }

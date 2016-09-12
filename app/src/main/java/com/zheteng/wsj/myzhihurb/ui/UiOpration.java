@@ -1,5 +1,6 @@
 package com.zheteng.wsj.myzhihurb.ui;
 
+import android.os.Bundle;
 import android.view.View;
 
 /**
@@ -27,8 +28,9 @@ public interface UiOpration extends View.OnClickListener {
 
     /**
      * 初始化页面数据
+     * @param savedInstanceState
      */
-    void initData();
+    void initData(Bundle savedInstanceState);
 
 
 }

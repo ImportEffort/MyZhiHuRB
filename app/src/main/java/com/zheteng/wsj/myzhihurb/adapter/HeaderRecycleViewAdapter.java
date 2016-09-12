@@ -159,7 +159,8 @@ public class HeaderRecycleViewAdapter extends RecyclerView.Adapter {
 
             if (storiesBean.getImages() != null) {
                 if (storiesBean.getImages().size() > 0) {
-                    ImageUtil.getInstance().displayImageDefault(storiesBean.getImages().get(0), ((Holder) holder).mIv_image);
+                    ((Holder) holder).mIv_image.setVisibility(View.VISIBLE);
+                    ImageUtil.getInstance().displayImage(storiesBean.getImages().get(0), ((Holder) holder).mIv_image);
                 }
             } else {
                 ((Holder) holder).mIv_image.setVisibility(View.GONE);

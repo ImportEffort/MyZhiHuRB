@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v4.view.PagerAdapter;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -54,7 +53,7 @@ public class LoopViewpagerIndater extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View view = LayoutInflater.from(GlobalApplication.context).inflate(R.layout.looper_viewpager_item, container, false);
+        View view = View.inflate(GlobalApplication.context,R.layout.looper_viewpager_item, null);
         mIvViewpagerLooper = (ImageView) view.findViewById(R.id.iv_viewpager_top);
         mTvViewpagerTitle = (TextView) view.findViewById(R.id.tv_viewpager_title);
         mFlTopContent = (FrameLayout) view.findViewById(R.id.fl_top_cotent);

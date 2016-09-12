@@ -1,5 +1,6 @@
 package com.zheteng.wsj.myzhihurb.ui.fragment;
 
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ public class NewsFragment extends BaseNewsFragemnt{
     private final static int REFRESH = 0;
     private final static int LOADMORE = 1;
     private int loadAction = REFRESH;
+    private boolean isRefresh;
 
 
     public NewsFragment(int urlId) {
@@ -57,9 +59,10 @@ public class NewsFragment extends BaseNewsFragemnt{
 
     /**
      * 在onViewCreated中调用
+     * @param savedInstanceState
      */
     @Override
-    public void initData() {
+    public void initData(Bundle savedInstanceState) {
         //启动页跳转过来的时候先展示缓存数据
         loadData(false);
         mSwipeRefreshLayout.setRefreshing(true);
@@ -89,6 +92,8 @@ public class NewsFragment extends BaseNewsFragemnt{
                 // LogUtil.e(result);
                 NewsBean newsBean = GsonUtil.parseJsonToBean(result, NewsBean.class);
                 showData(newsBean);
+                //
+                isRefresh = false;
             }
         },isForeFromNet);
 
@@ -132,7 +137,10 @@ public class NewsFragment extends BaseNewsFragemnt{
 
     @Override
     public void pullToLoadData() {
-
+        //如果正在刷新更多应该不让其上拉
+        if (isRefresh){
+            return;
+        }
         String url = String.format(Constants.NewsBeforeUrl,mUrlId,mBeforeId);
         HttpUtil.getInstance().getJsonString(url , new OkHttpCallBackForString() {
             @Override
@@ -155,17 +163,26 @@ public class NewsFragment extends BaseNewsFragemnt{
      */
     private void showBeforeData(String result, BeforeNewsBean beforeNewsBean) {
         List<BaseBean> stories = beforeNewsBean.getStories();
-        mBeforeId = stories.get(stories.size()-1).getId();
-        initRecycleData(stories);
-        mRecyclerView.setLoadMoreComplite(true);
+        if (stories.size()>0) {
+            mBeforeId = stories.get(stories.size() - 1).getId();
+            initRecycleData(stories);
+            mRecyclerView.setLoadMoreComplite(true);
+        }
     }
 
     @Override
     public void onRefresh() {
+        //应该禁用loadmore
         loadAction = REFRESH;
+        isRefresh = true;
         loadData(true);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 
     @Override
     public void onClick(View v) {

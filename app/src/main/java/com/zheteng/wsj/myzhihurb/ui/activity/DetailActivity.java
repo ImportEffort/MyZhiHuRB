@@ -1,6 +1,7 @@
 package com.zheteng.wsj.myzhihurb.ui.activity;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
@@ -116,7 +117,7 @@ public class DetailActivity extends BaseActivity {
     }
 
     @Override
-    public void initData() {
+    public void initData(Bundle savedInstanceState) {
         mNews_Id = getIntent().getStringExtra(Constants.NEWS_ID);
         loadData();
         upateToolBar();
