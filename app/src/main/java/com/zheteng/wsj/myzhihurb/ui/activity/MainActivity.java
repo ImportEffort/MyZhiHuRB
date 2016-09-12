@@ -14,8 +14,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.zheteng.wsj.myzhihurb.R;
-import com.zheteng.wsj.myzhihurb.fragment.HomeFragment;
-import com.zheteng.wsj.myzhihurb.fragment.NavFragment;
+import com.zheteng.wsj.myzhihurb.ui.fragment.NavFragment;
 import com.zheteng.wsj.myzhihurb.util.ToastUtil;
 
 import butterknife.InjectView;
@@ -51,7 +50,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        intNavFragment();
+        initFragment();
     }
 
 
@@ -75,7 +74,7 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private void intNavFragment() {
+    private void initFragment() {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -84,7 +83,7 @@ public class MainActivity extends BaseActivity {
         NavFragment fragment = new NavFragment();
 
         fragmentTransaction.replace(R.id.navigation_fragment, fragment, NAV_FRAGMENT);
-        fragmentTransaction.replace(R.id.fl_content,new HomeFragment(),HOME_FRGMENT);
+        fragmentTransaction.replace(R.id.fl_content,new com.zheteng.wsj.myzhihurb.ui.fragment.HomeFragment(),HOME_FRGMENT);
         fragmentTransaction.commit();
     }
 

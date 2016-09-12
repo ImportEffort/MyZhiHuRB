@@ -1,4 +1,4 @@
-package com.zheteng.wsj.myzhihurb.fragment;
+package com.zheteng.wsj.myzhihurb.ui.fragment;
 
 
 import android.content.Intent;
@@ -101,7 +101,7 @@ public class NavFragment extends ListFragment implements AdapterView.OnItemClick
                 List<SlidingMenuBean.OthersBean> listData = navBean.getOthers();
                 adapter.setData(listData);
             }
-        });
+        },false);
 
     }
 

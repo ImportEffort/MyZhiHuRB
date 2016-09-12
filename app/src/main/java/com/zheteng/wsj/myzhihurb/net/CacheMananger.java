@@ -8,7 +8,6 @@ import com.zheteng.wsj.myzhihurb.util.StreamUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,7 +24,7 @@ public class CacheMananger {
             + File.separator + "Cache";
 
 
-    private static int saveTime = 1000 * 60 * 60; //默认一个小时
+    private static int saveTime = 7 * 24 * 1000 * 60 * 60; //默认七天
 
 
     private static CacheMananger mCacheMananger = new CacheMananger();
@@ -45,7 +44,7 @@ public class CacheMananger {
      * 保存网络数据 保存内容，请求的json字符串
      *
      * @param url  请求的的地址，用来作为保存文件的名称
-     * @param data
+     * @param data 要保存的数据内容
      */
     public void saveCache(String url, String data) {
         //1.构建缓存文件
@@ -87,20 +86,18 @@ public class CacheMananger {
         }
         if (isVaild(file)) {
             try {
-                String line = null;
+                String line;
                 bufferedReader = new BufferedReader(new FileReader(file));
                 while ((line = bufferedReader.readLine()) != null) {
                     stringBuilder.append(line);
                 }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
                 StreamUtils.close(bufferedReader);
             }
 
-        }else {
+        } else {
             //如果文件已经无效则删除文件
             file.delete();
         }
@@ -110,17 +107,17 @@ public class CacheMananger {
     /**
      * 设置数据缓存时长
      *
-     * @param saveTime
+     * @param saveTime 数据缓存时长
      */
     public void setSaveTime(int saveTime) {
-        this.saveTime = saveTime;
+        CacheMananger.saveTime = saveTime;
     }
 
     /**
      * 初始化保存文件名称
      *
      * @param url 保存的内容的url
-     * @return
+     * @return 保存文件的File名称
      */
     public File buildCacheFile(String url) {
 
@@ -128,10 +125,10 @@ public class CacheMananger {
     }
 
     /**
-     * 判断缓存文件是否有效
+     * 判断缓存文件是否有效，可以动态设置某个文件的缓存保存时间？？？
      *
-     * @param file
-     * @return
+     * @param file 需要检查的缓存文件名称
+     * @return 是否有效
      */
     public boolean isVaild(File file) {
         //1.获取文件上次修改时间

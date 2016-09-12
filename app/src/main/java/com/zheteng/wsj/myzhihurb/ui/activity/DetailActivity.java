@@ -28,6 +28,7 @@ import butterknife.InjectView;
 import okhttp3.Call;
 
 /**
+ * 新新闻详情界面
  * Created by wsj20 on 2016/9/10.
  */
 public class DetailActivity extends BaseActivity {
@@ -135,7 +136,7 @@ public class DetailActivity extends BaseActivity {
      * 获取新闻详情页内容
      */
     private void loadData() {
-        LogUtil.e(Constants.NewsDetailUrl.toString() + mNews_Id);
+       // LogUtil.e(Constants.NewsDetailUrl.toString() + mNews_Id);
         HttpUtil.getInstance().getJsonString(Constants.NewsDetailUrl + mNews_Id, new OkHttpCallBackForString() {
             @Override
             public void onFailure(Call call, Exception e) {
@@ -149,7 +150,7 @@ public class DetailActivity extends BaseActivity {
                 String imageUrl = contentBean.getImage();
                 initViewData(contentBean, images, imageUrl);
             }
-        });
+        },false);
 
 
     }
@@ -157,9 +158,9 @@ public class DetailActivity extends BaseActivity {
     /**
      * 设置详情界面数据
      *
-     * @param contentBean
-     * @param images
-     * @param imageUrl
+     * @param contentBean 新闻内容封装bean
+     * @param images 详情的image数据，注意从这里获取的图片为压缩后的图片
+     * @param imageUrl  详情的image数据 高清图片
      */
     private void initViewData(ContentBean contentBean, List<String> images, String imageUrl) {
         if (images != null && !images.isEmpty()) {
@@ -196,7 +197,7 @@ public class DetailActivity extends BaseActivity {
                 mTvCommentNum.setText(String.valueOf(newsExtra.getComments()));
                 mTvThumbNum.setText(String.valueOf(newsExtra.getPopularity()));
             }
-        });
+        },false);
 
     }
 
@@ -214,12 +215,12 @@ public class DetailActivity extends BaseActivity {
         if (!isThumb) {
             mIvThumb.setImageResource(R.drawable.thumb_red);
             ToastUtil.show("点赞成功");
-            mTvCommentNum.setText(Integer.parseInt(mTvCommentNum.getText().toString()) + 1 + "");
+            mTvCommentNum.setText((Integer.parseInt(mTvCommentNum.getText().toString()) + 1) + "");
             isThumb = true;
         } else {
             mIvThumb.setImageResource(R.drawable.thumb);
             ToastUtil.show("取消点赞");
-            mTvCommentNum.setText(Integer.parseInt(mTvCommentNum.getText().toString()) - 1 + "");
+            mTvCommentNum.setText((Integer.parseInt(mTvCommentNum.getText().toString()) - 1) + "");
             isThumb = false;
         }
     }

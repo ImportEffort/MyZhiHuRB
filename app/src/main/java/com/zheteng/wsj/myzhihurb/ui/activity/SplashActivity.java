@@ -105,10 +105,11 @@ public class SplashActivity extends BaseActivity {
         if (imageUrl != null && !TextUtils.isEmpty(des)) {
             //LogUtil.e(imageUrl);
             ImageUtil.getInstance().displayImageDefault(imageUrl, mImgSplash);
+            mTvSplash.setText(des);
             startMainActivity();
         } else {
             mImgSplash.setImageResource(R.drawable.start);
-            mTvSplash.setText(des == null ? "" : des);
+            mTvSplash.setText("");
         }
         //如果网络可用 将最新的数据保存在
         if (NetConnectUtil.isConnect()) {
@@ -144,11 +145,11 @@ public class SplashActivity extends BaseActivity {
                 });
             }
 
-        });
+        },false);
     }
 
     /**
-     * 启动主页面
+     * 启动主页面 3s开启
      */
     private void startMainActivity() {
         mHandler = new Handler();
@@ -159,7 +160,7 @@ public class SplashActivity extends BaseActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 1000);
+        }, 2000);
     }
 
     @Override
