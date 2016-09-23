@@ -51,7 +51,7 @@ public interface Constants {
 
     /**
      * 新闻详情界面的Id 用来和NewsDetailUrl拼接为详情页面数据内容的url
-     * http://news-at.zhihu.com/api/4/news/ 7399166
+     * http://news-at.zhihu.com/api/4/news/7399166
      */
     String NEWS_ID = "news_id";//新闻详细信息的Id
     /**

@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'wsj'
+            keyPassword '123456'
+            storeFile file('C:/Users/wsj20/Desktop/zhihudaily.jks')
+            storePassword 'wang092024'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
-
     defaultConfig {
         applicationId "com.zheteng.wsj.myzhihurb"
         minSdkVersion 15
@@ -17,6 +24,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
@@ -25,8 +34,8 @@ dependencies {
     compile files('libs/universal-image-loader-1.9.4-with-sources.jar')
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-    compile 'me.relex:circleindicator:1.2.1@aar'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    compile 'me.relex:circleindicator:1.2.1@aar'
     compile 'com.android.support:appcompat-v7:24.2.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.google.code.gson:gson:2.7'
@@ -35,4 +44,20 @@ dependencies {
     compile 'com.bigkoo:convenientbanner:2.0.5'
     compile 'com.android.support:support-v4:24.2.0'
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile files('libs/MobCommons-2016.0830.1940.jar')
+    compile files('libs/MobTools-2016.0830.1940.jar')
+    compile files('libs/ShareSDK-Core-2.7.7.jar')
+    //compile files('libs/ShareSDK-Email-2.7.7.jar')
+    compile files('libs/ShareSDK-Evernote-2.7.7.jar')
+    compile files('libs/ShareSDK-QQ-2.7.7.jar')
+    //compile files('libs/ShareSDK-ShortMessage-2.7.7.jar')
+    compile files('libs/ShareSDK-SinaWeibo-2.7.7.jar')
+    compile files('libs/ShareSDK-Wechat-2.7.7.jar')
+    compile files('libs/ShareSDK-Wechat-Core-2.7.7.jar')
+    compile files('libs/ShareSDK-Wechat-Moments-2.7.7.jar')
+    compile files('libs/ShareSDK-YouDao-2.7.7.jar')
+    compile files('libs/ShareSDK-ShortMessage-2.7.7.jar')
+    compile files('libs/utdid4all-1.0.4.jar')
+    compile files('libs/umeng-analytics-v6.0.1.jar')
+    compile 'com.android.support:cardview-v7:24.2.0'
 }

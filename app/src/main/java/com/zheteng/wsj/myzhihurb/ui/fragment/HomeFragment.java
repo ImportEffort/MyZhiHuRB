@@ -98,6 +98,7 @@ public class HomeFragment extends BaseNewsFragemnt implements LoopViewpagerIndat
 
     /**
      * 显示上拉加载的数据
+     *
      * @param mLastNewBean 之前的新闻数据
      */
     private void sateBeforeData(LastNewBean mLastNewBean) {
@@ -124,9 +125,15 @@ public class HomeFragment extends BaseNewsFragemnt implements LoopViewpagerIndat
         loadData(true);
     }
 
+    @Override
+    protected void initData(Bundle savedInstanceState, Bundle bundle) {
+
+    }
+
     /**
      * 第一次展示的数据
-     * @param savedInstanceState
+     *  @param savedInstanceState
+     *
      */
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -197,7 +204,7 @@ public class HomeFragment extends BaseNewsFragemnt implements LoopViewpagerIndat
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mActivity =null;
+        mActivity = null;
 
     }
 
@@ -242,14 +249,9 @@ public class HomeFragment extends BaseNewsFragemnt implements LoopViewpagerIndat
      */
     @Override
     public void onPagerClick(int id) {
-        new LoopViewpagerIndater.OnPagerClickLisener() {
-            @Override
-            public void onPagerClick(int id) {
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra(Constants.NEWS_ID, id + "");
-                startActivity(intent);
-            }
-        };
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(Constants.NEWS_ID, id + "");
+        startActivity(intent);
     }
 
     /**

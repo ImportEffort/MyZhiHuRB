@@ -3,18 +3,23 @@
               android:layout_width="match_parent"
               android:id="@+id/ll_homeheader"
               android:layout_height="wrap_content"
+              android:gravity="center_vertical"
               android:background="@color/light_gray"
               android:orientation="horizontal">
 
     <ImageView
+        android:layout_marginTop="@dimen/dp5"
+        android:layout_marginBottom="@dimen/dp5"
         android:layout_width="@dimen/dp25"
         android:layout_height="@dimen/dp25"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginLeft="@dimen/dp20"
         android:layout_marginRight="@dimen/dp10"
         android:src="@drawable/home"/>
 
     <TextView
+        android:layout_marginTop="@dimen/dp5"
+        android:layout_marginBottom="@dimen/dp5"
         android:id="@+id/tv_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

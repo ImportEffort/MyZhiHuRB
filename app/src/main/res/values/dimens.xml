@@ -14,5 +14,7 @@
     <dimen name="dp25">25dp</dimen>
     <dimen name="dp80">80dp</dimen>
     <dimen name="dp60">60dp</dimen>
+    <dimen name="dp2">2dp</dimen>
+    <dimen name="dp8">8dp</dimen>
 
 </resources>

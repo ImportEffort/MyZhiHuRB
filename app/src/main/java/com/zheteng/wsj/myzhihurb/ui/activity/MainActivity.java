@@ -167,73 +167,109 @@ public class MainActivity extends BaseActivity implements OnSildingItemClickList
                 break;
             case "日常心理学":
                 if (mFragment1 == null) {
-                    mFragment1 = new NewsFragment(id);
+                    mFragment1 = new NewsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id",id);
+                    mFragment1.setArguments(bundle);
                 }
                 switchContent(isFragment,mFragment1);
                 break;
             case "用户推荐日报":
                 if (mFragment2 == null) {
-                    mFragment2 = new NewsFragment(id);
+                    mFragment2 = new NewsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id",id);
+                    mFragment2.setArguments(bundle);
                 }
                 switchContent(isFragment,mFragment2);
                 break;
             case "电影日报":
                 if (mFragment3 == null) {
-                    mFragment3 = new NewsFragment(id);
+                    mFragment3 = new NewsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id",id);
+                    mFragment3.setArguments(bundle);
                 }
                 switchContent(isFragment,mFragment3);
                 break;
             case "不许无聊":
                 if (mFragment4 == null) {
-                    mFragment4 = new NewsFragment(id);
+                    mFragment4 = new NewsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id",id);
+                    mFragment4.setArguments(bundle);
                 }
                 switchContent(isFragment,mFragment4);
                 break;
             case "设计日报":
                 if (mFragment5 == null) {
-                    mFragment5 = new NewsFragment(id);
+                    mFragment5 = new NewsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id",id);
+                    mFragment5.setArguments(bundle);
                 }
                 switchContent(isFragment,mFragment5);
                 break;
             case "大公司日报":
                 if (mFragment6 == null) {
-                    mFragment6 = new NewsFragment(id);
+                    mFragment6 = new NewsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id",id);
+                    mFragment6.setArguments(bundle);
                 }
                 switchContent(isFragment,mFragment6);
                 break;
             case "财经日报":
                 if (mFragment7== null) {
-                    mFragment7 = new NewsFragment(id);
+                    mFragment7 = new NewsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id",id);
+                    mFragment7.setArguments(bundle);
                 }
                 switchContent(isFragment,mFragment7);
                 break;
             case "互联网安全":
                 if (mFragment8 == null) {
-                    mFragment8 = new NewsFragment(id);
+                    mFragment8 = new NewsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id",id);
+                    mFragment8.setArguments(bundle);
                 }
                 switchContent(isFragment,mFragment8);
                 break;
             case "开始游戏":
                 if (mFragment9 == null) {
-                    mFragment9 = new NewsFragment(id);
+                    mFragment9 = new NewsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id",id);
+                    mFragment9.setArguments(bundle);
                 }
                 switchContent(isFragment,mFragment9);
                 break;
             case "音乐日报":
                 if (mFragment10 == null) {
-                    mFragment10 = new NewsFragment(id);
+                    mFragment10 = new NewsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id",id);
+                    mFragment10.setArguments(bundle);
                 }
                 switchContent(isFragment,mFragment10);
                 break;
             case "动漫日报":
                 if (mFragment11 == null) {
-                    mFragment11 = new NewsFragment(id);
+                    mFragment11 = new NewsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id",id);
+                    mFragment11.setArguments(bundle);
                 }
                 switchContent(isFragment,mFragment11);
                 break;
             case "体育日报":
                 if (mFragment12 == null) {
-                    mFragment12 = new NewsFragment(id);
+                    mFragment12 = new NewsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id",id);
+                    mFragment12.setArguments(bundle);
                 }
                 switchContent(isFragment,mFragment12);
                 break;

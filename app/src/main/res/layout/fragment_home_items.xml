@@ -1,29 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="10dp"
-    android:background="@drawable/item_touch_bg"
-    android:orientation="horizontal">
+    android:layout_marginBottom="@dimen/dp8"
+    android:layout_marginLeft="@dimen/dp5"
+    android:layout_marginRight="@dimen/dp5"
+    android:foreground="?attr/selectableItemBackground"
+    android:minHeight="100dp"
+    app:cardCornerRadius="@dimen/dp5">
 
-    <TextView
-        android:id="@+id/tv_items_Des"
-        android:layout_width="0dp"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:maxLines="2"
-        android:padding="10dp"
-        android:text="我是RecycleView的一个条目，我是RecycleView的一个条目我是RecycleView的一个条目"
-        android:textColor="@color/black_text"
-        android:textSize="18sp" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/iv_items_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginLeft="5dp"
-        android:src="@mipmap/ic_launcher" />
+        <TextView
+            android:id="@+id/tv_items_Des"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:text="我是RecycleView的一个条目，我是RecycleView的一个条目我是RecycleView的一个条目"
+            android:textColor="@color/black_text"
+            android:textSize="18sp"/>
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/iv_items_image"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:src="@mipmap/ic_launcher"/>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

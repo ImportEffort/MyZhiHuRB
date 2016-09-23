@@ -6,6 +6,7 @@
 
     <com.zheteng.wsj.myzhihurb.view.PullUpRecyclerView
         android:id="@+id/recyclerView"
+        android:background="@color/light_gray"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

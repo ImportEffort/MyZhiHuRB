@@ -18,6 +18,7 @@ import com.zheteng.wsj.myzhihurb.net.ImageUtil;
 import com.zheteng.wsj.myzhihurb.net.NetConnectUtil;
 import com.zheteng.wsj.myzhihurb.net.OkHttpCallBackForString;
 import com.zheteng.wsj.myzhihurb.util.GsonUtil;
+import com.zheteng.wsj.myzhihurb.util.LogUtil;
 import com.zheteng.wsj.myzhihurb.util.ToastUtil;
 
 import java.util.List;
@@ -40,6 +41,9 @@ public class NewsFragment extends BaseNewsFragemnt{
     private int loadAction = REFRESH;
     private boolean isRefresh;
 
+    public NewsFragment(){
+
+    }
 
     public NewsFragment(int urlId) {
         mUrlId = urlId;
@@ -60,9 +64,12 @@ public class NewsFragment extends BaseNewsFragemnt{
     /**
      * 在onViewCreated中调用
      * @param savedInstanceState
+     *
      */
     @Override
-    public void initData(Bundle savedInstanceState) {
+    public void initData(Bundle savedInstanceState,Bundle bundle) {
+        mUrlId = bundle.getInt("id");
+        LogUtil.e(mUrlId+"");
         //启动页跳转过来的时候先展示缓存数据
         loadData(false);
         mSwipeRefreshLayout.setRefreshing(true);
@@ -177,6 +184,7 @@ public class NewsFragment extends BaseNewsFragemnt{
         isRefresh = true;
         loadData(true);
     }
+
 
     @Override
     public void onPause() {

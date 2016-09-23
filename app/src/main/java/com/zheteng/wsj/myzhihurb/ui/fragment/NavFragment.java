@@ -80,7 +80,9 @@ public class NavFragment extends ListFragment implements AdapterView.OnItemClick
      */
     private void initHeaderView() {
         logHeaderView = View.inflate(getContext(), R.layout.list_nav_log_header, null);
-        homeHeaderView = View.inflate(getContext(), R.layout.list_nav_home_header, null);
+        //homeHeaderView = View.inflate(getContext(), R.layout.list_nav_home_header, null);
+        homeHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.list_nav_home_header, listView, false);
+
         mIv_userIcon = (ImageView) logHeaderView.findViewById(R.id.icon_user);
         mll_homeHeader = (LinearLayout) homeHeaderView.findViewById(R.id.ll_homeheader);
         mTv_save = (TextView) logHeaderView.findViewById(R.id.tv_save);
@@ -125,8 +127,8 @@ public class NavFragment extends ListFragment implements AdapterView.OnItemClick
         SlidingMenuBean.OthersBean item = (SlidingMenuBean.OthersBean) listView.getItemAtPosition(position);
         //替换Activity主界面fragment的内容显示
 
-        if (getActivity() instanceof  OnSildingItemClickListener){
-            ((OnSildingItemClickListener) getActivity()).onSildingItemClick(item.getId(),item.getName());
+        if (getActivity() instanceof OnSildingItemClickListener) {
+            ((OnSildingItemClickListener) getActivity()).onSildingItemClick(item.getId(), item.getName());
         }
     }
 
@@ -143,15 +145,15 @@ public class NavFragment extends ListFragment implements AdapterView.OnItemClick
 
                 homeHeaderView.setBackgroundColor(getResources().getColor(R.color.light_gray));
                 adapter.changeSelected(-1);
-                if (getActivity() instanceof  OnSildingItemClickListener){
-                    ((OnSildingItemClickListener) getActivity()).onSildingItemClick(-1,"首页");
+                if (getActivity() instanceof OnSildingItemClickListener) {
+                    ((OnSildingItemClickListener) getActivity()).onSildingItemClick(-1, "首页");
                 }
                 break;
 
         }
     }
 
-    public interface  OnSildingItemClickListener{
+    public interface OnSildingItemClickListener {
         void onSildingItemClick(int id, String name);
     }
 }
